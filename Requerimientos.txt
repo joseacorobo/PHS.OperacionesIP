@@ -1,0 +1,32 @@
+===REQUERIMIENTOS===
+
+1. Realizar una herramienta para agilizar el uso de comandos basicos o avanzados para el area de Soporte[cite: 1],
+con el fin de contar con un lugar donde chequear comandos de uso habitual, relevantes, ademas de que
+ayude a autocompletar de manera inteligente los Slots,PON, y Ct.Onu[cite: 1].
+
+==PROPUESTA===
+
+ - Realizar una plataforma bajo Web o entorno de facil acceso y de alta fidelidad para chequear comandos basicos , como importantes
+ en el area de soporte de Operaciones IP. 
+ - El sistema debe contar con seguridad e inicio/registro de usuarios.
+ - Debe agregar la flexibilidad para que el personal de soporte pueda ampliar la base de datos de comandos.
+ - La estructura debe dividirse por categorías: uso, basicos, recurrentes, casos especiales, casos router, casos bridge, casos según el tipo de ONU, y casos de IPs Certificadas[cite: 1].
+
+ - Extras o Recomendaciones Técnicas:
+ 
+			# EX-01: Portapapeles de un solo clic (One-click copy) para los comandos formateados.
+			# EX-02: Memoria de sesión local para recordar el último Slot y PON consultado.
+			# EX-03: Roles de usuario diferenciados (Operador y Administrador).
+			# EX-04: El Operador puede contar con una plantilla personal para comodidad de uso de cada empleado.
+			
+== Analisis del comportamiento de la herramienta y efectividad respecto a los procesos que ya funcionan======
+
+	- La herramienta busca agilizar el uso de comandos, y no recrear un sistema completo ya que en el caso del 815 ya cuenta con su propio sistema donde pueden verificar
+	todos los datos necesarios en los procesos de Operaciones IP[cite: 1]. Como tambien la OLT de Fiber Home, es decir lo que ya la misma empresa le facilita al trabajador[cite: 1].
+
+	- Generalmente como trabajan de manera paralela la OLT y el 815 desde el mismo dashboard que presta el 815 permite chequear facilmente tanto, Direccion MAC, IP, PLAN, CONECTIVIDAD,TRAFICO, Transmision, y casi todo lo que el operador necesita saber[cite: 1].
+	
+== CONCLUSIONES DE LA ETAPA DE DESARROLLO ==
+	- El sistema funcionará como un facilitador complementario para eliminar la fricción de los blocs de notas tradicionales, estandarizando la inyección de variables dinámicas (Slot, PON, ONU) sin reemplazar los sistemas centrales de la empresa[cite: 1].
+
+//Documento actualizado para la etapa de desarrollo formal. Última modificación: 07/09/2026 a las 4:22pm[cite: 1]
