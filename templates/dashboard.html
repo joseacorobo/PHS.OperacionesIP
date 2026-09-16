@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inter NOC - Sistema de Métricas y Operaciones IP</title>
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js para visualizaciones interactivas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--dash-bg);
+            color: var(--dash-text-body);
+            transition: background-color 200ms ease;
+            min-height: 100vh;
+        }
+
+        /* Barra Superior del Dashboard */
+        .dashboard-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--dash-border-subtle);
+        }
+
+        .dashboard-title-group h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dash-text-title);
+            letter-spacing: -0.02em;
+        }
+
+        .dashboard-title-group p {
+            margin: 0.25rem 0 0 0;
+            font-size: 0.825rem;
+            color: var(--dash-text-muted);
+        }
+
+        .dashboard-actions-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-pill-group {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            background-color: var(--dash-subtle);
+            padding: 0.25rem;
+            border-radius: 10px;
+            border: 1px solid var(--dash-border);
+        }
+
+        .btn-action-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #0056B3 0%, #0078D4 100%);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 8px;
+            padding: 0.55rem 1rem;
+            font-size: 0.775rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 160ms ease;
+            box-shadow: 0 2px 8px rgba(0, 86, 179, 0.25);
+        }
+
+        .btn-action-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(0, 86, 179, 0.4);
+        }
+
+        .btn-action-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--dash-card);
+            color: var(--dash-text-title);
+            border: 1px solid var(--dash-border);
+            border-radius: 8px;
+            padding: 0.55rem 1rem;
+            font-size: 0.775rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 160ms ease;
+        }
+
+        .btn-action-secondary:hover {
+            background-color: var(--dash-subtle);
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+
+        .theme-toggle-btn {
+            background-color: var(--dash-card);
+            border: 1px solid var(--dash-border);
+            color: var(--dash-text-title);
+            width: 2.35rem;
+            height: 2.35rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 150ms ease;
+        }
+
+        .theme-toggle-btn:hover {
+            background-color: var(--dash-subtle);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+        }
+
+        /* Grids de Contenido Full-Width */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        @media (max-width: 1200px) {
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 7fr 5fr;
+            gap: 1.25rem;
+        }
+
+        @media (max-width: 1024px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Hero KPI Progress */
+        .hero-progress-wrapper {
+            margin-top: 1rem;
+        }
+
+        .hero-progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.725rem;
+            margin-bottom: 0.4rem;
+            opacity: 0.9;
+        }
+
+        /* Status Badge para Tabla */
+        .badge-status {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.25rem 0.65rem;
+            border-radius: 9999px;
+            letter-spacing: 0.02em;
+        }
+        .badge-status.pendiente {
+            background-color: rgba(217, 119, 6, 0.15);
+            color: #F59E0B;
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }
+        .badge-status.progreso {
+            background-color: rgba(2, 132, 199, 0.15);
+            color: #38BDF8;
+            border: 1px solid rgba(56, 189, 248, 0.35);
+        }
+        .badge-status.completado {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #10B981;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }
+        .badge-status.espera {
+            background-color: rgba(129, 140, 248, 0.15);
+            color: #818CF8;
+            border: 1px solid rgba(129, 140, 248, 0.35);
+        }
+
+        /* Toast de Notificaciones */
+        .toast-container {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            pointer-events: none;
+        }
+
+        .toast-card {
+            background: #0D1527;
+            color: #FFFFFF;
+            border: 1px solid #1E293B;
+            padding: 0.85rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 260ms cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: auto;
+        }
+
+        .toast-card.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Filas clickeables con efecto Hover */
+        .table-corporate-metrics tbody tr.ticket-row {
+            cursor: pointer;
+            transition: all 140ms ease;
+        }
+
+        .table-corporate-metrics tbody tr.ticket-row:hover td {
+            background-color: var(--dash-subtle) !important;
+            color: var(--dash-text-title);
+        }
+
+        .dark .table-corporate-metrics tbody tr.ticket-row:hover td {
+            background-color: rgba(56, 189, 248, 0.08) !important;
+        }
+
+        /* Modal de Detalle de Ticket */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(7, 12, 25, 0.78);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 220ms ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background-color: var(--dash-card);
+            border: 1px solid var(--dash-border);
+            border-radius: 14px;
+            width: 100%;
+            max-width: 780px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.96) translateY(10px);
+            transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.25rem 1.75rem;
+            border-bottom: 1px solid var(--dash-border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background-color: var(--dash-card);
+            z-index: 10;
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            color: var(--dash-text-muted);
+            font-size: 1.6rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            transition: all 140ms ease;
+        }
+
+        .modal-close-btn:hover {
+            color: var(--dash-text-title);
+            background-color: var(--dash-subtle);
+        }
+
+        .modal-body {
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.35rem;
+        }
+
+        .modal-section {
+            background-color: var(--dash-subtle);
+            border: 1px solid var(--dash-border);
+            border-radius: 10px;
+            padding: 1.25rem;
+        }
+
+        .modal-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-section-title {
+            margin: 0;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--dash-text-muted);
+        }
+
+        .telco-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        @media (max-width: 640px) {
+            .telco-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .telco-cell {
+            background-color: var(--dash-card);
+            border: 1px solid var(--dash-border-subtle);
+            border-radius: 8px;
+            padding: 0.65rem 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .telco-cell-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--dash-text-muted);
+        }
+
+        .telco-cell-value {
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--dash-text-title);
+            word-break: break-all;
+        }
+
+        .btn-copy-chip {
+            background-color: var(--dash-card);
+            border: 1px solid var(--dash-border);
+            color: var(--dash-text-title);
+            font-size: 0.675rem;
+            font-weight: 700;
+            padding: 0.25rem 0.65rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: all 140ms ease;
+        }
+
+        .btn-copy-chip:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            background-color: var(--dash-subtle);
+            color: #38BDF8;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.75rem;
+            border-top: 1px solid var(--dash-border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background-color: var(--dash-card);
+            position: sticky;
+            bottom: 0;
+            z-index: 10;
+        }
+
+        .status-btn-group {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-status-toggle {
+            font-size: 0.675rem;
+            font-weight: 700;
+            padding: 0.35rem 0.65rem;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 140ms ease;
+        }
+
+        .btn-status-toggle:hover {
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body class="dark">
+    
+    <!-- ================= HEADER NAVBAR RESPONSIVO CON ILUMINACIÓN GLOW ================= -->
+    <header class="navbar-top">
+        <div class="navbar-inner">
+            
+            <!-- Marca y Logo Corporativo Inter NOC -->
+            <a href="#" class="navbar-brand">
+                <div class="brand-icon-frame">
+                    <span>IP</span>
+                </div>
+                <div class="brand-info">
+                    <div class="brand-title">
+                        <span>INTER</span>
+                        <span class="brand-badge">NOC FTTH</span>
+                    </div>
+                    <div class="brand-subtitle">Operaciones e Ingeniería IP</div>
+                </div>
+            </a>
+
+            <!-- Navegación Central con Efecto de Iluminación Glow (Spotlight) -->
+            <nav>
+                <ul class="navbar-nav">
+                    <li>
+                        <button class="nav-glow-item active" data-cell="Todas">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                            <span>Dashboard General</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-glow-item" data-cell="Soporte">
+                            <div class="nav-dot" style="background: #0284C7; box-shadow: 0 0 6px #0284C7;"></div>
+                            <span>FTTH Acceso</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-glow-item" data-cell="Cabecera">
+                            <div class="nav-dot" style="background: #F59E0B; box-shadow: 0 0 6px #F59E0B;"></div>
+                            <span>Cabecera / Core</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-glow-item" data-cell="Telefonía">
+                            <div class="nav-dot" style="background: #818CF8; box-shadow: 0 0 6px #818CF8;"></div>
+                            <span>Telefonía / SIP</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-glow-item" id="nav-btn-queue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                            <span>Cola Activa</span>
+                            <span class="nav-pill-badge" id="badge-queue-count">0</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Sección Derecha: Perfil de Usuario y Toggle Móvil -->
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div class="navbar-profile-chip" title="Usuario activo en turno">
+                    <div class="navbar-avatar">
+                        JC
+                        <div class="navbar-beacon"></div>
+                    </div>
+                    <div class="navbar-user-text">
+                        <p>José Corobo</p>
+                        <p>Soporte IP &bull; NOC</p>
+                    </div>
+                </div>
+
+                <!-- Botón Hamburguesa Móvil -->
+                <button class="navbar-mobile-toggle" id="btn-mobile-toggle" title="Abrir Menú">
+                    <svg style="width: 1.15rem; height: 1.15rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Drawer Menú Móvil Desplegable -->
+        <div class="navbar-mobile-drawer" id="mobile-drawer">
+            <button class="nav-glow-item active" data-cell="Todas">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                <span>Dashboard General</span>
+            </button>
+            <button class="nav-glow-item" data-cell="Soporte">
+                <div class="nav-dot" style="background: #0284C7;"></div>
+                <span>FTTH Acceso</span>
+            </button>
+            <button class="nav-glow-item" data-cell="Cabecera">
+                <div class="nav-dot" style="background: #F59E0B;"></div>
+                <span>Cabecera / Core</span>
+            </button>
+            <button class="nav-glow-item" data-cell="Telefonía">
+                <div class="nav-dot" style="background: #818CF8;"></div>
+                <span>Telefonía / SIP</span>
+            </button>
+            <button class="nav-glow-item" id="mobile-nav-btn-queue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                <span>Cola Activa</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ================= CONTENEDOR FLUIDO DEL DASHBOARD ================= -->
+    <main class="dashboard-container-fluid">
+        
+        <!-- BARRA SUPERIOR DE ENCABEZADO Y CONTROLES -->
+        <header class="dashboard-topbar">
+            <div class="dashboard-title-group">
+                <h1 id="view-title">Dashboard General de Operaciones IP</h1>
+                <p id="view-subtitle">Consola Unificada de Productividad Ponderada, SLAs y Cola Activa FTTH</p>
+            </div>
+            
+            <div class="dashboard-actions-group">
+                <!-- Selector de Rango Temporal -->
+                <div class="filter-pill-group">
+                    <button class="dashboard-filter-pill active" data-range="all">Todo</button>
+                    <button class="dashboard-filter-pill" data-range="month">Este Mes</button>
+                    <button class="dashboard-filter-pill" data-range="7days">7 Días</button>
+                    <button class="dashboard-filter-pill" data-range="today">Hoy</button>
+                </div>
+
+                <!-- Botón Simular Caso Cuadrilla -->
+                <button class="btn-action-primary" id="btn-simulate-ticket" title="Inyectar caso telco de prueba en tiempo real">
+                    <svg style="width: 0.9rem; height: 0.9rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <span>Simular Incidencia</span>
+                </button>
+
+                <!-- Botón Exportar Excel -->
+                <button class="btn-action-secondary" id="btn-export-excel" title="Descargar libro Excel multi-pestaña de supervisión">
+                    <svg style="width: 0.9rem; height: 0.9rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span>Exportar Excel</span>
+                </button>
+
+                <!-- Interruptor Modo Oscuro / Claro -->
+                <button class="theme-toggle-btn" id="btn-theme-toggle" title="Alternar Modo Oscuro / Claro">
+                    <span id="theme-icon">🌙</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- FILA 1: TARJETAS KPIS Y PULSO OPERATIVO -->
+        <section class="kpi-grid">
+            
+            <!-- Hero KPI: Meta Ponderada de Producción -->
+            <div class="dashboard-kpi-card dashboard-hero-kpi">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <h3 style="margin: 0; font-size: 0.825rem; font-weight: 600; opacity: 0.9;">PUNTOS DE PRODUCCIÓN</h3>
+                    <span class="kpi-trend-pill positive" style="background: rgba(255,255,255,0.2); color: #FFFFFF;">P1 - P5</span>
+                </div>
+                <div class="dashboard-kpi-value" id="kpi-hero-points" style="font-size: 2.25rem; margin-top: 0.5rem;">0 pts</div>
+                
+                <div class="hero-progress-wrapper">
+                    <div class="hero-progress-header">
+                        <span>Avance de Meta Global</span>
+                        <span id="kpi-progress-text">0%</span>
+                    </div>
+                    <div class="dashboard-progress-track" style="background: rgba(255,255,255,0.2);">
+                        <div class="dashboard-progress-fill" id="kpi-progress-bar" style="width: 0%; background: #FFFFFF;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- KPI 2: Tickets en Cola -->
+            <div class="dashboard-kpi-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <h3 style="margin: 0; font-size: 0.75rem; font-weight: 600; color: var(--dash-text-muted); text-transform: uppercase;">Casos en Cola Activa</h3>
+                    <div class="kpi-trend-pill warning" id="kpi-queue-trend">+12% vs ayer</div>
+                </div>
+                <div class="dashboard-kpi-value" id="kpi-queue-count" style="font-size: 1.75rem; color: var(--dash-text-title); margin-top: 0.5rem;">0</div>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.7rem; color: var(--dash-text-muted);">
+                    <strong id="kpi-pending-count" style="color: var(--dash-amber);">0</strong> pendientes &bull; <strong id="kpi-progress-count" style="color: var(--dash-cyan);">0</strong> en curso
+                </p>
+            </div>
+            
+            <!-- KPI 3: MTTR Promedio Neto -->
+            <div class="dashboard-kpi-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <h3 style="margin: 0; font-size: 0.75rem; font-weight: 600; color: var(--dash-text-muted); text-transform: uppercase;">MTTR Promedio Neto</h3>
+                    <div class="kpi-trend-pill positive" id="kpi-mttr-pill">Óptimo</div>
+                </div>
+                <div class="dashboard-kpi-value" id="kpi-avg-mttr" style="font-size: 1.75rem; color: var(--dash-text-title); margin-top: 0.5rem;">0 min</div>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.7rem; color: var(--dash-text-muted);">
+                    Excluye esperas de cuadrilla en terreno
+                </p>
+            </div>
+
+            <!-- KPI 4: Cumplimiento SLA -->
+            <div class="dashboard-kpi-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <h3 style="margin: 0; font-size: 0.75rem; font-weight: 600; color: var(--dash-text-muted); text-transform: uppercase;">Cumplimiento SLA</h3>
+                    <div class="kpi-trend-pill positive" id="kpi-sla-pill">En Rango</div>
+                </div>
+                <div class="dashboard-kpi-value" id="kpi-sla-compliance" style="font-size: 1.75rem; color: var(--dash-emerald); margin-top: 0.5rem;">100%</div>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.7rem; color: var(--dash-text-muted);">
+                    Meta corporativa: &ge; 90.0%
+                </p>
+            </div>
+
+        </section>
+
+        <!-- FILA 2: GRÁFICAS DE CARGA Y DISTRIBUCIÓN -->
+        <section class="charts-grid">
+            
+            <!-- Gráfica 1: Carga por Especialista -->
+            <div class="dashboard-chart-card">
+                <div class="dashboard-chart-header">
+                    <div>
+                        <h2 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--dash-text-title);">Carga Actual por Especialista</h2>
+                        <p style="margin: 0.2rem 0 0 0; font-size: 0.7rem; color: var(--dash-text-muted);">Puntos acumulados y balance de cuadrilla técnica</p>
+                    </div>
+                    <span class="dashboard-filter-pill active" style="font-size: 0.65rem;">Puntos Ponderados</span>
+                </div>
+                <div class="dashboard-chart-canvas-wrapper" style="height: 270px;">
+                    <canvas id="chart-operators"></canvas>
+                </div>
+            </div>
+
+            <!-- Gráfica 2: Incidencias por Categoría -->
+            <div class="dashboard-chart-card">
+                <div class="dashboard-chart-header">
+                    <div>
+                        <h2 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--dash-text-title);">Incidencias por Categoría</h2>
+                        <p style="margin: 0.2rem 0 0 0; font-size: 0.7rem; color: var(--dash-text-muted);">Tipificación de fallas resueltas P1 a P5</p>
+                    </div>
+                    <span class="dashboard-filter-pill" style="font-size: 0.65rem;" id="badge-total-tasks">0 tareas</span>
+                </div>
+                <div class="dashboard-chart-canvas-wrapper" style="height: 270px;">
+                    <canvas id="chart-categories"></canvas>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- FILA 3: LA TRINCHERA (TABLA DE COLA ACTIVA) -->
+        <section class="dashboard-chart-card" id="section-queue">
+            <div class="dashboard-chart-header">
+                <div>
+                    <h2 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--dash-text-title);">Cola de Trabajo Activa &bull; La Trinchera</h2>
+                    <p style="margin: 0.2rem 0 0 0; font-size: 0.7rem; color: var(--dash-text-muted);">Tickets de campo en espera &bull; Haz clic en cualquier caso para ver su descripción general y parámetros técnicos</p>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="dashboard-filter-pill active" id="filter-tickets-all">Todos</button>
+                    <button class="dashboard-filter-pill" id="filter-tickets-pending">Pendientes</button>
+                </div>
+            </div>
+            
+            <div style="overflow-x: auto;">
+                <table class="table-corporate-metrics">
+                    <thead>
+                        <tr>
+                            <th style="width: 160px;">Ticket de Referencia</th>
+                            <th style="width: 260px;">Categoría / Célula Asignada</th>
+                            <th>Descripción Breve</th>
+                            <th style="width: 140px; text-align: center;">Estado</th>
+                            <th style="width: 100px; text-align: center;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 2.5rem; color: var(--dash-text-muted);">
+                                Cargando casos en cola...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= MODAL DE DESCRIPCIÓN GENERAL Y DETALLES TÉCNICOS ================= -->
+    <div class="modal-overlay" id="ticket-modal-overlay">
+        <div class="modal-card">
+            
+            <!-- Cabecera del Modal -->
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                    <span style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 1.2rem; color: var(--dash-blue);" id="modal-ticket-code">INC-00000</span>
+                    <span class="badge-status pendiente" id="modal-ticket-status-badge">PENDIENTE</span>
+                    <span class="brand-badge" id="modal-ticket-area" style="font-size: 0.7rem;">Soporte</span>
+                </div>
+                <button class="modal-close-btn" id="modal-close-btn" title="Cerrar ventana">&times;</button>
+            </div>
+
+            <!-- Cuerpo del Modal con Secciones -->
+            <div class="modal-body">
+                
+                <!-- 1. Descripción General del Ticket -->
+                <div class="modal-section">
+                    <div class="modal-section-header">
+                        <h4 class="modal-section-title">Descripción General de la Incidencia</h4>
+                        <span style="font-size: 0.7rem; color: var(--dash-text-muted);" id="modal-ticket-date">Fecha</span>
+                    </div>
+                    <div style="font-size: 0.95rem; font-weight: 700; color: var(--dash-text-title); margin-bottom: 0.5rem;" id="modal-ticket-subject">
+                        Asunto del ticket
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 1.25rem; font-size: 0.75rem; color: var(--dash-text-muted);">
+                        <div><strong>Remitente:</strong> <span id="modal-ticket-sender" style="color: var(--dash-text-body);">cuadrilla@inter.com.ve</span></div>
+                        <div><strong>SLA Máximo:</strong> <span id="modal-ticket-sla" style="color: var(--dash-text-body);">45 min</span></div>
+                        <div><strong>Puntos Asignados:</strong> <span id="modal-ticket-points" style="font-weight: 700; color: var(--dash-blue);">3 pts</span></div>
+                    </div>
+                </div>
+
+                <!-- 2. Parámetros Técnicos Telco Extraídos -->
+                <div class="modal-section">
+                    <div class="modal-section-header">
+                        <h4 class="modal-section-title">Parámetros Técnicos Extraídos (FSM &bull; Topología FTTH)</h4>
+                        <button class="btn-copy-chip" id="btn-modal-copy" title="Copiar parámetros técnicos al portapapeles">
+                            <span>📋 Copiar Parámetros</span>
+                        </button>
+                    </div>
+                    <div class="telco-grid">
+                        <div class="telco-cell">
+                            <span class="telco-cell-label">Número de Abonado (10d):</span>
+                            <span class="telco-cell-value" id="modal-param-sub">N/A</span>
+                        </div>
+                        <div class="telco-cell">
+                            <span class="telco-cell-label">Serial PON (12c):</span>
+                            <span class="telco-cell-value" id="modal-param-serial">N/A</span>
+                        </div>
+                        <div class="telco-cell">
+                            <span class="telco-cell-label">Nodo OLT:</span>
+                            <span class="telco-cell-value" id="modal-param-node">N/A</span>
+                        </div>
+                        <div class="telco-cell">
+                            <span class="telco-cell-label">Ubicación FSM (Slot / PON / ONU):</span>
+                            <span class="telco-cell-value" id="modal-param-slot">N/A</span>
+                        </div>
+                        <div class="telco-cell">
+                            <span class="telco-cell-label">Dirección MAC Abonado:</span>
+                            <span class="telco-cell-value" id="modal-param-mac">N/A</span>
+                        </div>
+                        <div class="telco-cell">
+                            <span class="telco-cell-label">Tipo de Tarea DERS:</span>
+                            <span class="telco-cell-value" id="modal-param-task" style="font-family: inherit; font-size: 0.775rem;">Operación Estándar</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Mensaje Completo Original -->
+                <div class="modal-section">
+                    <div class="modal-section-header">
+                        <h4 class="modal-section-title">Reporte Completo de Cuadrilla / Terreno</h4>
+                    </div>
+                    <div style="background-color: var(--dash-card); border: 1px solid var(--dash-border-subtle); border-radius: 8px; padding: 0.85rem; font-size: 0.8rem; line-height: 1.6; color: var(--dash-text-body); white-space: pre-wrap;" id="modal-ticket-body">
+                        Cuerpo del mensaje...
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Pie del Modal con Control de Estados y Cierre -->
+            <div class="modal-footer">
+                <div class="status-btn-group">
+                    <span style="font-size: 0.725rem; font-weight: 700; color: var(--dash-text-muted);">Marcar Estado:</span>
+                    <button class="btn-status-toggle badge-status pendiente" data-new-status="PENDIENTE">Pendiente</button>
+                    <button class="btn-status-toggle badge-status progreso" data-new-status="EN PROGRESO">En Progreso</button>
+                    <button class="btn-status-toggle badge-status completado" data-new-status="COMPLETADO">Completado</button>
+                    <button class="btn-status-toggle badge-status espera" data-new-status="EN ESPERA">En Espera</button>
+                </div>
+                <button class="btn-action-secondary" id="modal-footer-close">Cerrar Detalle</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Contenedor Toast para Notificaciones -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

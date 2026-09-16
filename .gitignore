@@ -1,0 +1,33 @@
+# Entorno y Bytecode Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.env
+.venv/
+env/
+venv/
+
+# Base de datos local SQLite y backups
+*.db
+*.sqlite
+*.sqlite3
+Backend/ip_ops.db
+
+# Credenciales y configuraciones locales
+config_mail.json
+Backend/config_mail.json
+
+# Archivos temporales de adjuntos y simulaciones
+Frontend/static/attachments/
+Backend/static/attachments/
+static/attachments/
+*.xlsx
+
+# IDEs y Editores
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp

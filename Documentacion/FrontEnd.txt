@@ -1,0 +1,13 @@
+=== ESPECIFICACIONES TÉCNICAS DEL SISTEMA ===
+
+1. Stack Tecnológico Frontend:
+   - HTML5, CSS3 y JavaScript Vanilla para garantizar un rendimiento rápido, sin dependencias de frameworks complejos y ejecución directa en cualquier navegador del área de soporte[cite: 1].
+
+2. Gestión de Datos y Persistencia:
+   - Uso inicial de almacenamiento local (Local Storage / JSON) y estructuración para integración futura con SQLite como base de datos ultraligera, evitando la sobrecarga de motores pesados[cite: 1].
+
+3. Estrategia de Servidor y Despliegue (Fase de Pruebas):
+   - Despliegue inicial mediante GitHub Pages para realizar pruebas de campo rápidas, permitiendo validar la interfaz, el autocompetado de variables (Slot, PON, ONU) y la fluidez operativa con el equipo sin necesidad de configurar un servidor físico dedicado[cite: 1].
+   - Escalabilidad posterior hacia un entorno local o dominio interno si los requerimientos de seguridad, autenticación de usuarios y base de datos colaborativa lo exigen[cite: 1].
+
+// Documento generado para el control de la arquitectura del proyecto. Última modificación: 07/09/2026[cite: 1]
