@@ -110,17 +110,19 @@ async def api_get_tickets(
         query = """
         SELECT et.id, et.ticket_code, et.sender_email, et.subject, et.full_body, et.area,
                et.subscriber_code, et.serial_pon, et.node_name, et.slot_pon, et.mac_address,
-               et.status, et.folder, et.created_at,
-               tt.name as task_name, tt.code as task_code, tt.points, tt.sla_minutes
+               et.status, et.folder, et.created_at, et.claimed_at,
+               tt.name as task_name, tt.code as task_code, tt.points, tt.sla_minutes,
+               u.id as operator_id, u.name as operator_name, u.avatar as operator_avatar, u.area as operator_area
         FROM email_tickets et
         LEFT JOIN task_types tt ON et.suggested_task_type_id = tt.id
+        LEFT JOIN users u ON et.claimed_by_user_id = u.id
         WHERE 1=1
         """
         params = []
         
         if area and area not in ["Todas", "Todas las Areas", ""]:
-            query += " AND et.area = ?"
-            params.append(area)
+            query += " AND (et.area = ? OR u.area = ?)"
+            params.extend([area, area])
             
         if status and status != "TODOS":
             query += " AND et.status = ?"
@@ -130,8 +132,46 @@ async def api_get_tickets(
         params.append(limit)
         
         cur.execute(query, params)
-        tickets = [dict(r) for r in cur.fetchall()]
+        raw_tickets = [dict(r) for r in cur.fetchall()]
         conn.close()
+
+        # Mapeo de estilos y colores por área para cada ticket
+        area_color_map = {
+            "FTTH": {"color": "#D97706", "bg": "rgba(217, 119, 6, 0.18)", "border": "#D97706", "label": "FTTH"},
+            "WAN": {"color": "#0284C7", "bg": "rgba(2, 132, 199, 0.18)", "border": "#0284C7", "label": "WAN"},
+            "G.C": {"color": "#BE123C", "bg": "rgba(190, 18, 60, 0.18)", "border": "#BE123C", "label": "G.C"},
+            "SEGURIDAD": {"color": "#10B981", "bg": "rgba(16, 185, 129, 0.18)", "border": "#10B981", "label": "SEGURIDAD"}
+        }
+
+        tickets = []
+        for t in raw_tickets:
+            item = dict(t)
+            effective_area = item.get("operator_area") or item.get("area") or "FTTH"
+            colors = area_color_map.get(effective_area, {"color": "#38BDF8", "bg": "rgba(56, 189, 248, 0.18)", "border": "#38BDF8", "label": effective_area})
+            item["area_color"] = colors["color"]
+            item["area_bg"] = colors["bg"]
+            item["area_border"] = colors["border"]
+            item["display_area"] = colors["label"]
+            
+            # Si no tiene operador asignado explícito, asignar por célula
+            if not item.get("operator_name"):
+                if effective_area == "FTTH":
+                    item["operator_name"] = "José Corobo"
+                    item["operator_avatar"] = "JC"
+                elif effective_area == "SEGURIDAD":
+                    item["operator_name"] = "Carlos Ruiz"
+                    item["operator_avatar"] = "CR"
+                elif effective_area == "WAN":
+                    item["operator_name"] = "María Santos"
+                    item["operator_avatar"] = "MS"
+                elif effective_area == "G.C":
+                    item["operator_name"] = "Roberto Méndez"
+                    item["operator_avatar"] = "RM"
+                else:
+                    item["operator_name"] = "Operador NOC"
+                    item["operator_avatar"] = "OP"
+                    
+            tickets.append(item)
         
         return JSONResponse(content={"status": "ok", "count": len(tickets), "tickets": tickets})
     except Exception as e:

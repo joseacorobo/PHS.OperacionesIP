@@ -290,3 +290,621 @@
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
     overflow: hidden;
 }
+
+/* ==========================================================================
+   8. ESPECIFICACIÓN DEL BOCETO WIREFRAME: DASHBOARD PRINCIPAL INTER NOC
+   ========================================================================== */
+
+:root {
+    --area-ftth: #D97706;
+    --area-ftth-border: #B45309;
+    --area-ftth-bg: rgba(217, 119, 6, 0.18);
+
+    --area-wan: #0284C7;
+    --area-wan-border: #0369A1;
+    --area-wan-bg: rgba(2, 132, 199, 0.18);
+
+    --area-gc: #BE123C;
+    --area-gc-border: #9F1239;
+    --area-gc-bg: rgba(190, 18, 60, 0.18);
+
+    --area-seguridad: #10B981;
+    --area-seguridad-border: #059669;
+    --area-seguridad-bg: rgba(16, 185, 129, 0.18);
+}
+
+/* Título Superior del Boceto */
+.sketch-top-title-wrapper {
+    text-align: center;
+    margin-bottom: 0.75rem;
+    padding-top: 0.5rem;
+}
+
+.sketch-top-title {
+    font-size: 1.35rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--dash-text-title);
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.sketch-top-title::before,
+.sketch-top-title::after {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--dash-cyan));
+}
+
+.sketch-top-title::after {
+    background: linear-gradient(90deg, var(--dash-cyan), transparent);
+}
+
+/* Marco Principal del Boceto (Frame exterior con esquinas redondeadas dobles) */
+.sketch-outer-frame {
+    background-color: var(--dash-bg);
+    border: 2px solid var(--dash-border);
+    border-radius: 24px;
+    padding: 1.25rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    position: relative;
+    max-width: 1540px;
+    margin: 0 auto;
+    transition: all 200ms ease;
+}
+
+.dark .sketch-outer-frame {
+    background-color: #0E121A;
+    border-color: #262D38;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Barra de Navegación del Boceto */
+.sketch-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border: 1.5px solid var(--dash-border);
+    border-radius: 16px;
+    padding: 0.65rem 1.25rem;
+    background-color: var(--dash-card);
+    margin-bottom: 1.25rem;
+}
+
+.dark .sketch-navbar {
+    background-color: #141923;
+    border-color: #242C3A;
+}
+
+.sketch-brand-btn {
+    border: 2px solid #0284C7;
+    border-radius: 12px;
+    padding: 0.45rem 1.25rem;
+    color: #38BDF8;
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: 0.05em;
+    background: rgba(2, 132, 199, 0.12);
+    box-shadow: 0 0 14px rgba(2, 132, 199, 0.35);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 160ms ease;
+}
+
+.sketch-brand-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 20px rgba(2, 132, 199, 0.55);
+    background: rgba(2, 132, 199, 0.2);
+}
+
+.sketch-nav-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--dash-subtle);
+    padding: 0.3rem 0.4rem;
+    border-radius: 14px;
+    border: 1px solid var(--dash-border);
+}
+
+.sketch-tab-btn {
+    background: transparent;
+    border: 1.5px solid transparent;
+    border-radius: 10px;
+    padding: 0.45rem 1.35rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--dash-text-muted);
+    cursor: pointer;
+    transition: all 160ms ease;
+}
+
+.sketch-tab-btn:hover {
+    color: var(--dash-text-title);
+    background-color: var(--dash-card);
+}
+
+.sketch-tab-btn.active {
+    background-color: var(--dash-card);
+    color: var(--dash-text-title);
+    border-color: var(--dash-border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.dark .sketch-tab-btn.active {
+    background-color: #1A212E;
+    color: #F8FAFC;
+    border-color: rgba(56, 189, 248, 0.5);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+}
+
+.sketch-user-btn {
+    border: 1.5px solid var(--dash-border);
+    border-radius: 12px;
+    padding: 0.45rem 1rem;
+    color: var(--dash-text-title);
+    font-weight: 700;
+    font-size: 0.825rem;
+    background-color: var(--dash-card);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    transition: all 150ms ease;
+}
+
+.sketch-user-btn:hover {
+    border-color: rgba(56, 189, 248, 0.5);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+}
+
+.sketch-user-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0284C7, #0056B3);
+    color: #FFFFFF;
+    font-size: 0.65rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Fila de Tarjetas KPI del Boceto (4 columnas) */
+.sketch-kpi-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+@media (max-width: 1024px) {
+    .sketch-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .sketch-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.sketch-kpi-card {
+    background-color: var(--dash-card);
+    border: 1.5px solid var(--dash-border);
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 160ms ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.dark .sketch-kpi-card {
+    background-color: #141923;
+    border-color: #242C3A;
+}
+
+.sketch-kpi-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(56, 189, 248, 0.4);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Tarjeta 1 Destacada (55pts Total Tickets 17-09-2026) */
+.sketch-kpi-card.sketch-kpi-featured {
+    border-color: rgba(56, 189, 248, 0.5);
+    background: linear-gradient(145deg, rgba(2, 132, 199, 0.12) 0%, rgba(20, 25, 35, 0.95) 100%);
+    box-shadow: 0 4px 20px rgba(2, 132, 199, 0.15);
+}
+
+.sketch-kpi-pts {
+    font-size: 2.1rem;
+    font-weight: 900;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--dash-text-title);
+    line-height: 1.1;
+    margin-bottom: 0.35rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+}
+
+.sketch-kpi-pts span {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #38BDF8;
+}
+
+.sketch-kpi-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--dash-text-title);
+    margin: 0;
+}
+
+.sketch-kpi-date {
+    font-size: 0.725rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--dash-text-muted);
+    margin-top: 0.4rem;
+}
+
+.sketch-kpi-metric-val {
+    font-size: 1.65rem;
+    font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--dash-text-title);
+    margin-bottom: 0.25rem;
+}
+
+/* Grid Principal de 2 Columnas del Boceto */
+.sketch-main-grid {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: 1.25rem;
+}
+
+@media (max-width: 1100px) {
+    .sketch-main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Paneles del Boceto */
+.sketch-panel {
+    background-color: var(--dash-card);
+    border: 1.5px solid var(--dash-border);
+    border-radius: 18px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.dark .sketch-panel {
+    background-color: #141923;
+    border-color: #242C3A;
+}
+
+.sketch-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    border-bottom: 1.5px solid var(--dash-border-subtle);
+    padding-bottom: 0.85rem;
+    margin-bottom: 0.85rem;
+}
+
+.sketch-panel-title-block h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--dash-text-title);
+}
+
+.sketch-panel-title-block p {
+    margin: 0.25rem 0 0 0;
+    font-size: 0.75rem;
+    color: var(--dash-text-muted);
+}
+
+.sketch-pill-control {
+    background-color: var(--dash-subtle);
+    border: 1.5px solid var(--dash-border);
+    border-radius: 10px;
+    padding: 0.35rem 1rem;
+    font-size: 0.775rem;
+    font-weight: 700;
+    color: var(--dash-text-title);
+    cursor: pointer;
+    transition: all 140ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.sketch-pill-control:hover {
+    border-color: #38BDF8;
+    background-color: rgba(56, 189, 248, 0.1);
+    color: #38BDF8;
+}
+
+/* Área de Gráfica de Carga de Operadores */
+.sketch-chart-area {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 340px;
+}
+
+.sketch-chart-y-caption {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--dash-text-muted);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.sketch-chart-canvas-wrapper {
+    position: relative;
+    width: 100%;
+    height: 250px;
+}
+
+/* Línea de Umbral Operativo Punteada */
+.sketch-threshold-line {
+    position: absolute;
+    top: 38%;
+    left: 45px;
+    right: 15px;
+    border-top: 2px dashed rgba(148, 163, 184, 0.45);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.sketch-threshold-label {
+    position: absolute;
+    right: 0;
+    top: -16px;
+    font-size: 0.65rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--dash-text-muted);
+    background-color: var(--dash-card);
+    padding: 0 4px;
+}
+
+/* Barra Inferior del Gráfico: Eje X y Leyenda */
+.sketch-chart-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+    border-top: 1.5px solid var(--dash-border-subtle);
+}
+
+.sketch-axis-x-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.775rem;
+    font-weight: 700;
+    color: var(--dash-text-body);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.sketch-legend-container {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+}
+
+.sketch-legend-hint {
+    font-size: 0.725rem;
+    color: var(--dash-text-muted);
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.sketch-legend-chips {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.sketch-chip-area {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: 8px;
+    border: 1.5px solid;
+    cursor: pointer;
+    transition: all 140ms ease;
+}
+
+.sketch-chip-area.ftth {
+    background-color: var(--area-ftth-bg);
+    border-color: var(--area-ftth);
+    color: #FBBF24;
+}
+
+.sketch-chip-area.wan {
+    background-color: var(--area-wan-bg);
+    border-color: var(--area-wan);
+    color: #38BDF8;
+}
+
+.sketch-chip-area.gc {
+    background-color: var(--area-gc-bg);
+    border-color: var(--area-gc);
+    color: #FB7185;
+}
+
+.sketch-chip-area.seguridad {
+    background-color: var(--area-seguridad-bg);
+    border-color: var(--area-seguridad);
+    color: #34D399;
+}
+
+.sketch-chip-box {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+/* Feed Vertical de Casos Actuales (Panel Derecho) */
+.sketch-cases-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    overflow-y: auto;
+    max-height: 380px;
+    padding-right: 0.35rem;
+}
+
+.sketch-cases-feed::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sketch-cases-feed::-webkit-scrollbar-thumb {
+    background: var(--dash-border);
+    border-radius: 4px;
+}
+
+.sketch-case-card {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    border: 1.5px solid var(--dash-border);
+    background-color: var(--dash-subtle);
+    cursor: pointer;
+    transition: all 180ms ease;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.sketch-case-card:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+.sketch-case-card.area-wan {
+    border-color: var(--area-wan);
+    background: linear-gradient(90deg, rgba(2, 132, 199, 0.14) 0%, var(--dash-subtle) 100%);
+}
+
+.sketch-case-card.area-gc {
+    border-color: var(--area-gc);
+    background: linear-gradient(90deg, rgba(190, 18, 60, 0.14) 0%, var(--dash-subtle) 100%);
+}
+
+.sketch-case-card.area-seguridad {
+    border-color: var(--area-seguridad);
+    background: linear-gradient(90deg, rgba(16, 185, 129, 0.14) 0%, var(--dash-subtle) 100%);
+}
+
+.sketch-case-card.area-ftth {
+    border-color: var(--area-ftth);
+    background: linear-gradient(90deg, rgba(217, 119, 6, 0.14) 0%, var(--dash-subtle) 100%);
+}
+
+.sketch-case-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.775rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.sketch-case-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.sketch-case-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.2rem;
+}
+
+.sketch-case-operator-name {
+    font-size: 0.825rem;
+    font-weight: 800;
+    color: var(--dash-text-title);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sketch-case-tag {
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.sketch-case-details {
+    font-size: 0.725rem;
+    color: var(--dash-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sketch-case-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.675rem;
+    color: var(--dash-text-muted);
+    margin-top: 0.25rem;
+}
+
+.sketch-case-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--dash-cyan);
+}

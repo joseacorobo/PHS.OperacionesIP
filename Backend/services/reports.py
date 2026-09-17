@@ -68,8 +68,8 @@ def get_managerial_summary(area: str = "Todas", range_filter: str = "all") -> di
     within_sla = cur.fetchone()[0] or 0
     sla_compliance = round((within_sla / total_tasks * 100), 1) if total_tasks > 0 else 100.0
 
-    # 2. Desglose por Células / Áreas Funcionales
-    areas_list = ["Soporte", "Cabecera", "Telefonía"]
+    # 2. Desglose por Células / Áreas Funcionales (Alineado al Boceto Inter NOC)
+    areas_list = ["FTTH", "WAN", "G.C", "SEGURIDAD"]
     area_breakdown = []
     for a in areas_list:
         cur.execute(f"""
@@ -82,7 +82,7 @@ def get_managerial_summary(area: str = "Todas", range_filter: str = "all") -> di
         
         # Cantidad de especialistas
         cur.execute("SELECT COUNT(*) FROM users WHERE area = ?", [a])
-        techs_count = cur.fetchone()[0] or 4
+        techs_count = cur.fetchone()[0] or 1
         pts_per_tech = round(a_points / techs_count, 1) if techs_count else 0
         
         if pts_per_tech <= 25:
@@ -107,7 +107,7 @@ def get_managerial_summary(area: str = "Todas", range_filter: str = "all") -> di
             "badge": badge
         })
 
-    # 3. Productividad Detallada por Especialista (Dinámico)
+    # 3. Productividad Detallada por Especialista (Dinámico para Boceto)
     cur.execute(f"""
     SELECT u.id, u.name, u.area, u.role, u.avatar,
            COUNT(tl.id) as tasks_count,
@@ -121,14 +121,33 @@ def get_managerial_summary(area: str = "Todas", range_filter: str = "all") -> di
     FROM users u
     LEFT JOIN task_logs tl ON u.id = tl.user_id AND {range_sql}
     LEFT JOIN task_types tt ON tl.task_type_id = tt.id
-    WHERE {user_area_sql}
+    WHERE {user_area_sql} AND u.role = 'ESPECIALISTA'
     GROUP BY u.id
     ORDER BY total_points DESC
     """, params)
     
+    # Mapeo de colores por área según boceto
+    area_color_map = {
+        "FTTH": {"color": "#D97706", "bg": "rgba(217, 119, 6, 0.2)", "border": "#D97706", "label": "FTTH"},
+        "WAN": {"color": "#0284C7", "bg": "rgba(2, 132, 199, 0.2)", "border": "#0284C7", "label": "WAN"},
+        "G.C": {"color": "#BE123C", "bg": "rgba(190, 18, 60, 0.2)", "border": "#BE123C", "label": "G.C"},
+        "SEGURIDAD": {"color": "#10B981", "bg": "rgba(16, 185, 129, 0.2)", "border": "#10B981", "label": "SEGURIDAD"}
+    }
+    
     tech_rankings = []
     for row in cur.fetchall():
+        u_id = row[0]
+        u_area = row[2]
         pts = row[6] or 0
+        
+        # Conteo de tickets actualmente activos operando
+        cur.execute("SELECT COUNT(*) FROM email_tickets WHERE claimed_by_user_id = ? AND status IN ('EN PROGRESO', 'PENDIENTE')", [u_id])
+        active_tickets = cur.fetchone()[0] or 0
+        
+        # Tiempo activo promedio o acumulado en resolver
+        cur.execute("SELECT COALESCE(AVG(net_duration), 25) FROM task_logs WHERE user_id = ?", [u_id])
+        avg_active_min = round(cur.fetchone()[0] or 25, 1)
+
         if pts <= 25:
             st = "Equilibrada"
             st_color = "emerald"
@@ -139,15 +158,22 @@ def get_managerial_summary(area: str = "Todas", range_filter: str = "all") -> di
             st = "Alta"
             st_color = "red"
             
+        colors = area_color_map.get(u_area, {"color": "#38BDF8", "bg": "rgba(56, 189, 248, 0.2)", "border": "#38BDF8", "label": u_area})
+            
         tech_rankings.append({
-            "id": row[0],
+            "id": u_id,
             "name": row[1],
-            "area": row[2],
+            "area": u_area,
             "role": row[3],
             "avatar": row[4],
             "tasks_count": row[5] or 0,
+            "active_tickets": active_tickets,
+            "active_time_min": avg_active_min,
             "total_points": pts,
             "avg_mttr": round(row[7] or 0, 1),
+            "area_color": colors["color"],
+            "area_bg": colors["bg"],
+            "area_border": colors["border"],
             "p1": row[8] or 0,
             "p2": row[9] or 0,
             "p3": row[10] or 0,

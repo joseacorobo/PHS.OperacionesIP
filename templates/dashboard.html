@@ -450,274 +450,318 @@
 </head>
 <body class="dark">
     
-    <!-- ================= HEADER NAVBAR RESPONSIVO CON ILUMINACIÓN GLOW ================= -->
-    <header class="navbar-top">
-        <div class="navbar-inner">
-            
-            <!-- Marca y Logo Corporativo Inter NOC -->
-            <a href="#" class="navbar-brand">
-                <div class="brand-icon-frame">
-                    <span>IP</span>
-                </div>
-                <div class="brand-info">
-                    <div class="brand-title">
-                        <span>INTER</span>
-                        <span class="brand-badge">NOC FTTH</span>
-                    </div>
-                    <div class="brand-subtitle">Operaciones e Ingeniería IP</div>
-                </div>
-            </a>
-
-            <!-- Navegación Central con Efecto de Iluminación Glow (Spotlight) -->
-            <nav>
-                <ul class="navbar-nav">
-                    <li>
-                        <button class="nav-glow-item active" data-cell="Todas">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                            <span>Dashboard General</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button class="nav-glow-item" data-cell="Soporte">
-                            <div class="nav-dot" style="background: #0284C7; box-shadow: 0 0 6px #0284C7;"></div>
-                            <span>FTTH Acceso</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button class="nav-glow-item" data-cell="Cabecera">
-                            <div class="nav-dot" style="background: #F59E0B; box-shadow: 0 0 6px #F59E0B;"></div>
-                            <span>Cabecera / Core</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button class="nav-glow-item" data-cell="Telefonía">
-                            <div class="nav-dot" style="background: #818CF8; box-shadow: 0 0 6px #818CF8;"></div>
-                            <span>Telefonía / SIP</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button class="nav-glow-item" id="nav-btn-queue">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                            <span>Cola Activa</span>
-                            <span class="nav-pill-badge" id="badge-queue-count">0</span>
-                        </button>
-                    </li>
-                </ul>
-            </nav>
-
-            <!-- Sección Derecha: Perfil de Usuario y Toggle Móvil -->
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <div class="navbar-profile-chip" title="Usuario activo en turno">
-                    <div class="navbar-avatar">
-                        JC
-                        <div class="navbar-beacon"></div>
-                    </div>
-                    <div class="navbar-user-text">
-                        <p>José Corobo</p>
-                        <p>Soporte IP &bull; NOC</p>
-                    </div>
-                </div>
-
-                <!-- Botón Hamburguesa Móvil -->
-                <button class="navbar-mobile-toggle" id="btn-mobile-toggle" title="Abrir Menú">
-                    <svg style="width: 1.15rem; height: 1.15rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                </button>
-            </div>
-
-        </div>
-
-        <!-- Drawer Menú Móvil Desplegable -->
-        <div class="navbar-mobile-drawer" id="mobile-drawer">
-            <button class="nav-glow-item active" data-cell="Todas">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                <span>Dashboard General</span>
-            </button>
-            <button class="nav-glow-item" data-cell="Soporte">
-                <div class="nav-dot" style="background: #0284C7;"></div>
-                <span>FTTH Acceso</span>
-            </button>
-            <button class="nav-glow-item" data-cell="Cabecera">
-                <div class="nav-dot" style="background: #F59E0B;"></div>
-                <span>Cabecera / Core</span>
-            </button>
-            <button class="nav-glow-item" data-cell="Telefonía">
-                <div class="nav-dot" style="background: #818CF8;"></div>
-                <span>Telefonía / SIP</span>
-            </button>
-            <button class="nav-glow-item" id="mobile-nav-btn-queue">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                <span>Cola Activa</span>
-            </button>
-        </div>
-    </header>
-
-    <!-- ================= CONTENEDOR FLUIDO DEL DASHBOARD ================= -->
-    <main class="dashboard-container-fluid">
+    <!-- ================= DASHBOARD PRINCIPAL (BOCETO WIREFRAME) ================= -->
+    <div style="padding: 1.25rem 1.75rem; max-width: 1600px; margin: 0 auto;">
         
-        <!-- BARRA SUPERIOR DE ENCABEZADO Y CONTROLES -->
-        <header class="dashboard-topbar">
-            <div class="dashboard-title-group">
-                <h1 id="view-title">Dashboard General de Operaciones IP</h1>
-                <p id="view-subtitle">Consola Unificada de Productividad Ponderada, SLAs y Cola Activa FTTH</p>
-            </div>
+        <!-- TÍTULO SUPERIOR DEL BOCETO -->
+        <div class="sketch-top-title-wrapper">
+            <h1 class="sketch-top-title">DASHBOARD PRINCIPAL</h1>
+        </div>
+
+        <!-- MARCO PRINCIPAL DEL BOCETO (FRAME) -->
+        <div class="sketch-outer-frame">
             
-            <div class="dashboard-actions-group">
-                <!-- Selector de Rango Temporal -->
-                <div class="filter-pill-group">
-                    <button class="dashboard-filter-pill active" data-range="all">Todo</button>
-                    <button class="dashboard-filter-pill" data-range="month">Este Mes</button>
-                    <button class="dashboard-filter-pill" data-range="7days">7 Días</button>
-                    <button class="dashboard-filter-pill" data-range="today">Hoy</button>
-                </div>
-
-                <!-- Botón Simular Caso Cuadrilla -->
-                <button class="btn-action-primary" id="btn-simulate-ticket" title="Inyectar caso telco de prueba en tiempo real">
-                    <svg style="width: 0.9rem; height: 0.9rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    <span>Simular Incidencia</span>
-                </button>
-
-                <!-- Botón Exportar Excel -->
-                <button class="btn-action-secondary" id="btn-export-excel" title="Descargar libro Excel multi-pestaña de supervisión">
-                    <svg style="width: 0.9rem; height: 0.9rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    <span>Exportar Excel</span>
-                </button>
-
-                <!-- Interruptor Modo Oscuro / Claro -->
-                <button class="theme-toggle-btn" id="btn-theme-toggle" title="Alternar Modo Oscuro / Claro">
-                    <span id="theme-icon">🌙</span>
-                </button>
-            </div>
-        </header>
-
-        <!-- FILA 1: TARJETAS KPIS Y PULSO OPERATIVO -->
-        <section class="kpi-grid">
-            
-            <!-- Hero KPI: Meta Ponderada de Producción -->
-            <div class="dashboard-kpi-card dashboard-hero-kpi">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <h3 style="margin: 0; font-size: 0.825rem; font-weight: 600; opacity: 0.9;">PUNTOS DE PRODUCCIÓN</h3>
-                    <span class="kpi-trend-pill positive" style="background: rgba(255,255,255,0.2); color: #FFFFFF;">P1 - P5</span>
-                </div>
-                <div class="dashboard-kpi-value" id="kpi-hero-points" style="font-size: 2.25rem; margin-top: 0.5rem;">0 pts</div>
+            <!-- NAVBAR DEL BOCETO -->
+            <header class="sketch-navbar">
                 
-                <div class="hero-progress-wrapper">
-                    <div class="hero-progress-header">
-                        <span>Avance de Meta Global</span>
-                        <span id="kpi-progress-text">0%</span>
+                <!-- 1. Marca / Logo [ Inter ] -->
+                <a href="/" class="sketch-brand-btn" id="sketch-brand-btn" title="Inter Operaciones IP">
+                    <svg style="width: 1.1rem; height: 1.1rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke-width="2"/><path d="M2 12h20" stroke-width="2"/></svg>
+                    <span>Inter</span>
+                </a>
+
+                <!-- 2. Pestañas Centrales: General, Departamentos, Reportes -->
+                <nav class="sketch-nav-tabs">
+                    <button class="sketch-tab-btn active" data-tab="general" id="tab-btn-general">General</button>
+                    <button class="sketch-tab-btn" data-tab="departamentos" id="tab-btn-departamentos">Departamentos</button>
+                    <button class="sketch-tab-btn" data-tab="reportes" id="tab-btn-reportes">Reportes</button>
+                    <button class="sketch-tab-btn" data-tab="trinchera" id="tab-btn-trinchera" style="display: inline-flex; align-items: center; gap: 0.35rem;">
+                        <span>Cola Activa</span>
+                        <span class="nav-pill-badge" id="badge-queue-count" style="background:#0284C7; color:#fff; padding: 0.1rem 0.45rem; border-radius: 9999px; font-size: 0.65rem;">0</span>
+                    </button>
+                </nav>
+
+                <!-- 3. Perfil de Usuario [ User ] & Acciones Rápidas -->
+                <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+                    
+                    <!-- Botón Simular Caso Cuadrilla -->
+                    <button class="btn-action-primary" id="btn-simulate-ticket" title="Inyectar caso telco de prueba en tiempo real" style="padding: 0.4rem 0.8rem; font-size: 0.725rem;">
+                        <svg style="width: 0.85rem; height: 0.85rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <span>Simular Incidencia</span>
+                    </button>
+
+                    <!-- Botón Exportar Excel -->
+                    <button class="btn-action-secondary" id="btn-export-excel" title="Descargar libro Excel multi-pestaña de supervisión" style="padding: 0.4rem 0.8rem; font-size: 0.725rem;">
+                        <svg style="width: 0.85rem; height: 0.85rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <span>Excel</span>
+                    </button>
+
+                    <!-- Botón Usuario [ User ] -->
+                    <div class="sketch-user-btn" id="sketch-user-btn" title="Especialista Activo en Turno">
+                        <div class="sketch-user-avatar" id="sketch-user-avatar">JC</div>
+                        <span id="sketch-user-name">José Corobo</span>
                     </div>
-                    <div class="dashboard-progress-track" style="background: rgba(255,255,255,0.2);">
-                        <div class="dashboard-progress-fill" id="kpi-progress-bar" style="width: 0%; background: #FFFFFF;"></div>
+
+                    <!-- Interruptor Modo Oscuro / Claro -->
+                    <button class="theme-toggle-btn" id="btn-theme-toggle" title="Alternar Modo Oscuro / Claro" style="width: 2.15rem; height: 2.15rem;">
+                        <span id="theme-icon">🌙</span>
+                    </button>
+                </div>
+
+            </header>
+
+            <!-- FILA DE 4 TARJETAS KPIS SUPERIORES -->
+            <section class="sketch-kpi-grid">
+                
+                <!-- Tarjeta 1: 55pts Total Tickets 17-09-2026 (Fiel al Boceto) -->
+                <div class="sketch-kpi-card sketch-kpi-featured">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div class="sketch-kpi-pts">
+                            <span id="kpi-hero-points">55</span><span>pts</span>
+                        </div>
+                        <span class="brand-badge" style="font-size: 0.65rem;">Producción</span>
                     </div>
-                </div>
-            </div>
-            
-            <!-- KPI 2: Tickets en Cola -->
-            <div class="dashboard-kpi-card">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <h3 style="margin: 0; font-size: 0.75rem; font-weight: 600; color: var(--dash-text-muted); text-transform: uppercase;">Casos en Cola Activa</h3>
-                    <div class="kpi-trend-pill warning" id="kpi-queue-trend">+12% vs ayer</div>
-                </div>
-                <div class="dashboard-kpi-value" id="kpi-queue-count" style="font-size: 1.75rem; color: var(--dash-text-title); margin-top: 0.5rem;">0</div>
-                <p style="margin: 0.5rem 0 0 0; font-size: 0.7rem; color: var(--dash-text-muted);">
-                    <strong id="kpi-pending-count" style="color: var(--dash-amber);">0</strong> pendientes &bull; <strong id="kpi-progress-count" style="color: var(--dash-cyan);">0</strong> en curso
-                </p>
-            </div>
-            
-            <!-- KPI 3: MTTR Promedio Neto -->
-            <div class="dashboard-kpi-card">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <h3 style="margin: 0; font-size: 0.75rem; font-weight: 600; color: var(--dash-text-muted); text-transform: uppercase;">MTTR Promedio Neto</h3>
-                    <div class="kpi-trend-pill positive" id="kpi-mttr-pill">Óptimo</div>
-                </div>
-                <div class="dashboard-kpi-value" id="kpi-avg-mttr" style="font-size: 1.75rem; color: var(--dash-text-title); margin-top: 0.5rem;">0 min</div>
-                <p style="margin: 0.5rem 0 0 0; font-size: 0.7rem; color: var(--dash-text-muted);">
-                    Excluye esperas de cuadrilla en terreno
-                </p>
-            </div>
-
-            <!-- KPI 4: Cumplimiento SLA -->
-            <div class="dashboard-kpi-card">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <h3 style="margin: 0; font-size: 0.75rem; font-weight: 600; color: var(--dash-text-muted); text-transform: uppercase;">Cumplimiento SLA</h3>
-                    <div class="kpi-trend-pill positive" id="kpi-sla-pill">En Rango</div>
-                </div>
-                <div class="dashboard-kpi-value" id="kpi-sla-compliance" style="font-size: 1.75rem; color: var(--dash-emerald); margin-top: 0.5rem;">100%</div>
-                <p style="margin: 0.5rem 0 0 0; font-size: 0.7rem; color: var(--dash-text-muted);">
-                    Meta corporativa: &ge; 90.0%
-                </p>
-            </div>
-
-        </section>
-
-        <!-- FILA 2: GRÁFICAS DE CARGA Y DISTRIBUCIÓN -->
-        <section class="charts-grid">
-            
-            <!-- Gráfica 1: Carga por Especialista -->
-            <div class="dashboard-chart-card">
-                <div class="dashboard-chart-header">
                     <div>
-                        <h2 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--dash-text-title);">Carga Actual por Especialista</h2>
-                        <p style="margin: 0.2rem 0 0 0; font-size: 0.7rem; color: var(--dash-text-muted);">Puntos acumulados y balance de cuadrilla técnica</p>
+                        <div class="sketch-kpi-title" id="kpi-total-tickets-label">Total Tickets</div>
+                        <div class="sketch-kpi-date" id="kpi-current-date">17-09-2026</div>
                     </div>
-                    <span class="dashboard-filter-pill active" style="font-size: 0.65rem;">Puntos Ponderados</span>
                 </div>
-                <div class="dashboard-chart-canvas-wrapper" style="height: 270px;">
-                    <canvas id="chart-operators"></canvas>
-                </div>
-            </div>
 
-            <!-- Gráfica 2: Incidencias por Categoría -->
-            <div class="dashboard-chart-card">
-                <div class="dashboard-chart-header">
+                <!-- Tarjeta 2: Casos en Cola Activa -->
+                <div class="sketch-kpi-card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <span class="telco-cell-label" style="text-transform: uppercase; font-size: 0.675rem; letter-spacing: 0.04em;">Casos en Cola Activa</span>
+                        <span class="kpi-trend-pill warning" id="kpi-queue-trend">+12% vs ayer</span>
+                    </div>
                     <div>
-                        <h2 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--dash-text-title);">Incidencias por Categoría</h2>
-                        <p style="margin: 0.2rem 0 0 0; font-size: 0.7rem; color: var(--dash-text-muted);">Tipificación de fallas resueltas P1 a P5</p>
+                        <div class="sketch-kpi-metric-val" id="kpi-queue-count">13</div>
+                        <div style="font-size: 0.7rem; color: var(--dash-text-muted);">
+                            <strong id="kpi-pending-count" style="color: var(--dash-amber);">4</strong> pendientes &bull; <strong id="kpi-progress-count" style="color: var(--dash-cyan);">9</strong> en curso
+                        </div>
                     </div>
-                    <span class="dashboard-filter-pill" style="font-size: 0.65rem;" id="badge-total-tasks">0 tareas</span>
                 </div>
-                <div class="dashboard-chart-canvas-wrapper" style="height: 270px;">
-                    <canvas id="chart-categories"></canvas>
+
+                <!-- Tarjeta 3: MTTR Promedio Neto -->
+                <div class="sketch-kpi-card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <span class="telco-cell-label" style="text-transform: uppercase; font-size: 0.675rem; letter-spacing: 0.04em;">MTTR Promedio Neto</span>
+                        <span class="kpi-trend-pill positive" id="kpi-mttr-pill">Óptimo</span>
+                    </div>
+                    <div>
+                        <div class="sketch-kpi-metric-val" id="kpi-avg-mttr">23.5 min</div>
+                        <div style="font-size: 0.7rem; color: var(--dash-text-muted);">
+                            Tiempo promedio activo en resolver
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 4: Cumplimiento SLA -->
+                <div class="sketch-kpi-card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <span class="telco-cell-label" style="text-transform: uppercase; font-size: 0.675rem; letter-spacing: 0.04em;">Cumplimiento SLA</span>
+                        <span class="kpi-trend-pill positive" id="kpi-sla-pill">En Rango</span>
+                    </div>
+                    <div>
+                        <div class="sketch-kpi-metric-val" id="kpi-sla-compliance" style="color: var(--dash-emerald);">96.8%</div>
+                        <div style="font-size: 0.7rem; color: var(--dash-text-muted);">
+                            Meta corporativa: &ge; 90.0%
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- CONTENIDO PRINCIPAL EN 2 COLUMNAS (CARGA OPERADORES vs HISTORIAL CASOS) -->
+            <div id="view-section-general">
+                <div class="sketch-main-grid">
+                    
+                    <!-- PANEL IZQUIERDO: CARGA ACTUAL - OPERADORES -->
+                    <section class="sketch-panel">
+                        
+                        <!-- Cabecera del Panel Izquierdo -->
+                        <div class="sketch-panel-header">
+                            <div class="sketch-panel-title-block">
+                                <h2>Carga Actual - Operadores</h2>
+                                <p>Cantidad de tickets o Casos en el que se esta operando.</p>
+                            </div>
+                            
+                            <!-- Selector General / Área -->
+                            <div style="display: flex; align-items: center; gap: 0.4rem;">
+                                <button class="sketch-pill-control active" id="btn-chart-area-filter" title="Filtrar por Área">
+                                    <span id="current-chart-area-label">General</span>
+                                    <span style="font-size: 0.65rem;">▾</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Área de la Gráfica con Indicadores de Ejes y Umbral Punteado -->
+                        <div class="sketch-chart-area">
+                            <div class="sketch-chart-y-caption">
+                                <span>▲ Cantidad de tickets o Casos en el que se esta operando.</span>
+                            </div>
+
+                            <div class="sketch-chart-canvas-wrapper">
+                                <canvas id="chart-operators"></canvas>
+                                <!-- Línea de umbral operativo punteada trazada según el boceto -->
+                                <div class="sketch-threshold-line">
+                                    <span class="sketch-threshold-label">Umbral de Carga Equilibrada</span>
+                                </div>
+                            </div>
+
+                            <!-- Barra Inferior del Gráfico: Eje X y Leyenda de 4 Áreas -->
+                            <div class="sketch-chart-footer">
+                                <div class="sketch-axis-x-label">
+                                    <span>| X | Tiempo Activo en resolver</span>
+                                </div>
+
+                                <div class="sketch-legend-container">
+                                    <span class="sketch-legend-hint">El color representa el area ➔</span>
+                                    <div class="sketch-legend-chips">
+                                        <button class="sketch-chip-area ftth" data-filter-cell="FTTH" title="Filtrar FTTH Acceso">
+                                            <span class="sketch-chip-box" style="background: #D97706;"></span>
+                                            <span>FTTH</span>
+                                        </button>
+                                        <button class="sketch-chip-area wan" data-filter-cell="WAN" title="Filtrar WAN / Core">
+                                            <span class="sketch-chip-box" style="background: #0284C7;"></span>
+                                            <span>WAN</span>
+                                        </button>
+                                        <button class="sketch-chip-area gc" data-filter-cell="G.C" title="Filtrar Gestión y Calidad">
+                                            <span class="sketch-chip-box" style="background: #BE123C;"></span>
+                                            <span>G.C</span>
+                                        </button>
+                                        <button class="sketch-chip-area seguridad" data-filter-cell="SEGURIDAD" title="Filtrar Seguridad / Telefonía">
+                                            <span class="sketch-chip-box" style="background: #10B981;"></span>
+                                            <span>SEGURIDAD</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                    <!-- PANEL DERECHO: HISTORIAL DE CASOS ACTUALES -->
+                    <section class="sketch-panel">
+                        
+                        <!-- Cabecera del Panel Derecho -->
+                        <div class="sketch-panel-header">
+                            <div class="sketch-panel-title-block">
+                                <h2>Historial de Casos Actuales</h2>
+                                <p id="cases-feed-subtitle">Casos en resolución activa por especialista</p>
+                            </div>
+                            
+                            <span class="brand-badge" id="badge-active-feed-count" style="font-size: 0.7rem; padding: 0.25rem 0.65rem;">
+                                0 casos activos
+                            </span>
+                        </div>
+
+                        <!-- Lista / Feed de Casos Activos con Estilos por Área -->
+                        <div class="sketch-cases-feed" id="sketch-cases-feed">
+                            <div style="text-align: center; padding: 3rem 1rem; color: var(--dash-text-muted);">
+                                Cargando historial de casos activos...
+                            </div>
+                        </div>
+
+                    </section>
+
                 </div>
             </div>
 
-        </section>
-
-        <!-- FILA 3: LA TRINCHERA (TABLA DE COLA ACTIVA) -->
-        <section class="dashboard-chart-card" id="section-queue">
-            <div class="dashboard-chart-header">
-                <div>
-                    <h2 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--dash-text-title);">Cola de Trabajo Activa &bull; La Trinchera</h2>
-                    <p style="margin: 0.2rem 0 0 0; font-size: 0.7rem; color: var(--dash-text-muted);">Tickets de campo en espera &bull; Haz clic en cualquier caso para ver su descripción general y parámetros técnicos</p>
-                </div>
-                <div style="display: flex; gap: 0.5rem;">
-                    <button class="dashboard-filter-pill active" id="filter-tickets-all">Todos</button>
-                    <button class="dashboard-filter-pill" id="filter-tickets-pending">Pendientes</button>
+            <!-- SECCIÓN: VISTA DE DEPARTAMENTOS (PESTAÑA 'DEPARTAMENTOS') -->
+            <div id="view-section-departamentos" style="display: none; margin-top: 1.25rem;">
+                <div class="sketch-panel">
+                    <div class="sketch-panel-header">
+                        <div class="sketch-panel-title-block">
+                            <h2>Distribución Operativa por Departamento / Célula</h2>
+                            <p>Monitoreo balanceado de carga técnica, puntos ponderados y MTTR por área especializada</p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;" id="departments-cards-grid">
+                        <!-- Generado dinámicamente con JS -->
+                    </div>
                 </div>
             </div>
-            
-            <div style="overflow-x: auto;">
-                <table class="table-corporate-metrics">
-                    <thead>
-                        <tr>
-                            <th style="width: 160px;">Ticket de Referencia</th>
-                            <th style="width: 260px;">Categoría / Célula Asignada</th>
-                            <th>Descripción Breve</th>
-                            <th style="width: 140px; text-align: center;">Estado</th>
-                            <th style="width: 100px; text-align: center;">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body">
-                        <tr>
-                            <td colspan="5" style="text-align: center; padding: 2.5rem; color: var(--dash-text-muted);">
-                                Cargando casos en cola...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
 
-    </main>
+            <!-- SECCIÓN: VISTA DE REPORTES (PESTAÑA 'REPORTES') -->
+            <div id="view-section-reportes" style="display: none; margin-top: 1.25rem;">
+                <div class="sketch-panel">
+                    <div class="sketch-panel-header">
+                        <div class="sketch-panel-title-block">
+                            <h2>Consola de Reportes y Descarga de Supervisión</h2>
+                            <p>Métricas consolidadas, auditoría de eventos y exportación directa de libros Excel</p>
+                        </div>
+                        <button class="btn-action-primary" id="btn-export-excel-tab">
+                            <span>Descargar Reporte Completo .xlsx</span>
+                        </button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+                        <div class="dashboard-chart-card">
+                            <div class="dashboard-chart-header">
+                                <div>
+                                    <h3 style="margin:0; font-size:0.9rem; font-weight:700;">Tipificación por Categoría</h3>
+                                    <p style="margin:0.2rem 0 0 0; font-size:0.7rem; color:var(--dash-text-muted);">Distribución de incidencias P1 - P5</p>
+                                </div>
+                            </div>
+                            <div style="height: 240px;">
+                                <canvas id="chart-categories"></canvas>
+                            </div>
+                        </div>
+                        <div class="dashboard-chart-card">
+                            <div class="dashboard-chart-header">
+                                <div>
+                                    <h3 style="margin:0; font-size:0.9rem; font-weight:700;">Resumen Gerencial del Turno</h3>
+                                    <p style="margin:0.2rem 0 0 0; font-size:0.7rem; color:var(--dash-text-muted);">Puntos ponderados y cumplimiento SLA</p>
+                                </div>
+                            </div>
+                            <div id="report-summary-box" style="font-size: 0.825rem; line-height: 1.8; color: var(--dash-text-body); padding: 0.5rem;">
+                                <!-- Llenado por JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN: LA TRINCHERA (TABLA COMPLETA DE CASOS) -->
+            <div id="view-section-trinchera" style="display: none; margin-top: 1.25rem;">
+                <section class="dashboard-chart-card" id="section-queue">
+                    <div class="dashboard-chart-header">
+                        <div>
+                            <h2 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--dash-text-title);">Cola de Trabajo Activa &bull; La Trinchera</h2>
+                            <p style="margin: 0.2rem 0 0 0; font-size: 0.7rem; color: var(--dash-text-muted);">Tickets de campo en espera &bull; Haz clic en cualquier caso para ver su descripción general y parámetros técnicos</p>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="dashboard-filter-pill active" id="filter-tickets-all">Todos</button>
+                            <button class="dashboard-filter-pill" id="filter-tickets-pending">Pendientes</button>
+                        </div>
+                    </div>
+                    
+                    <div style="overflow-x: auto;">
+                        <table class="table-corporate-metrics">
+                            <thead>
+                                <tr>
+                                    <th style="width: 150px;">Ticket / Ref</th>
+                                    <th style="width: 220px;">Especialista &bull; Célula</th>
+                                    <th>Descripción de Incidencia</th>
+                                    <th style="width: 130px; text-align: center;">Estado</th>
+                                    <th style="width: 100px; text-align: center;">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 2.5rem; color: var(--dash-text-muted);">
+                                        Cargando casos en cola...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+
+    </div>
 
     <!-- ================= MODAL DE DESCRIPCIÓN GENERAL Y DETALLES TÉCNICOS ================= -->
     <div class="modal-overlay" id="ticket-modal-overlay">
